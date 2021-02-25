@@ -4,7 +4,7 @@ import {
   CheckResponse,
   AuthorizationControllerMethods,
   AuthorizationController,
-} from '../types/envoy/service/auth/v2/external_auth';
+} from 'src/types/envoy/service/auth/v2/external_auth';
 
 import { AuthService } from './auth.service';
 

@@ -17,7 +17,7 @@ async function bootstrap() {
       loader: {
         includeDirs: [join(__dirname, '../vendor')],
       },
-      url: '127.0.0.1:5000',
+      url: '0.0.0.0:5000',
     },
   });
 

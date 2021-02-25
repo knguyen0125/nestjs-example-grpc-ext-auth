@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorizer
+spec:
+  selector:
+    matchLabels:
+      app: authorizer
+  template:
+    metadata:
+      labels:
+        app: authorizer
+    spec:
+      containers:
+        - name: authorizer
+          image: authorizer
+          ports:
+            - containerPort: 5000
+              name: grpc

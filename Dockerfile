@@ -1,7 +1,7 @@
 FROM node:14-alpine as dependencies
 WORKDIR /usr/src/app
 COPY package.json package.json
-COPY package-log.json package-lock.json
+COPY package-lock.json package-lock.json
 RUN npm ci --production && \
     mv node_modules ../prod_node_modules && \
     npm ci

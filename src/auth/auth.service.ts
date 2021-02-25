@@ -1,17 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { status } from 'grpc';
 import { StatusCode } from 'src/types/envoy/type/http_status';
 import {
   CheckRequest,
   CheckResponse,
-} from '../types/envoy/service/auth/v2/external_auth';
+} from 'src/types/envoy/service/auth/v2/external_auth';
 
 @Injectable()
 export class AuthService {
   async check(request: CheckRequest): Promise<CheckResponse> {
-    console.log(request);
+    console.log(JSON.stringify(request, null, 2));
     try {
       const token = 'Bearer abcd';
+      console.log('hello world');
+      return this.createUnauthenticatedResponse();
       return this.createOkResponse(token);
     } catch (err) {
       return this.createUnauthenticatedResponse();
@@ -33,10 +35,10 @@ export class AuthService {
             // https://github.com/stephenh/ts-proto/issues/69
             // @ts-ignore
             append: {
-              value: true,
+              value: false,
             },
             header: {
-              key: 'Authorization',
+              key: 'authorization',
               value: token,
             },
           },
@@ -55,7 +57,7 @@ export class AuthService {
       deniedResponse: {
         status: { code: StatusCode.Unauthorized },
         headers: [],
-        body: JSON.stringify({ message: 'Unauthenticated' }),
+        body: JSON.stringify(new UnauthorizedException().getResponse()),
       },
     };
   }

@@ -1,0 +1,13 @@
+apiVersion: gloo.solo.io/v1
+kind: Upstream
+metadata:
+  name: authorizer
+  namespace: gloo-system
+spec:
+  useHttp2: true
+  kube:
+    serviceName: authorizer
+    serviceNamespace: default
+    servicePort: 5000
+    serviceSpec:
+      grpc: {}
