@@ -10,11 +10,10 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      package: 'envoy.service.auth.v2',
-      protoPath: join(
-        __dirname,
-        '../vendor/envoy/service/auth/v2/external_auth.proto',
-      ),
+      package: ['envoy.service.auth.v2'],
+      protoPath: [
+        join(__dirname, '../vendor/envoy/service/auth/v2/external_auth.proto'),
+      ],
       loader: {
         includeDirs: [join(__dirname, '../vendor')],
       },
