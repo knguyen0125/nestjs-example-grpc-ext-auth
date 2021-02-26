@@ -21,4 +21,8 @@ git clone git@github.com:cncf/udpa.git
 cp -R udpa/udpa ./vendor/udpa
 rm -rf udpa
 
+git clone git@github.com:cncf/xds.git
+cp -R xds/xds ./vendor/xds
+rm -rf xds
+
 bash ./gen.sh

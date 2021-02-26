@@ -13,6 +13,7 @@ TS_PROTO_OUT_DIR="${ROOT}/src/types"
 
 AUTH_VERSIONS=(
     "v2"
+    "v3"
 )
 
 rm -rf ${TS_PROTO_OUT_DIR}
@@ -24,6 +25,6 @@ do
     --plugin=${PROTOC_PLUGIN_PATH} \
     --ts_proto_out=${TS_PROTO_OUT_DIR} \
     --proto_path=${VENDOR} \
-    --ts_proto_opt=nestJs=true,addNestjsRestParameter=true,addGrpcMetadata=true,useOptionals=true,outputEncodeMethods=true \
+    --ts_proto_opt=nestJs=true,addNestjsRestParameter=true,addGrpcMetadata=true,useOptionals=true \
     ${VENDOR}/envoy/service/auth/${AUTH_VERSION}/external_auth.proto
 done

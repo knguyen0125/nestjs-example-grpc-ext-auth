@@ -1,4 +1,8 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class TokenService {}
+export class TokenService {
+    createAccessToken() {
+
+    }
+}

@@ -1,22 +1,36 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { status } from 'grpc';
 import { StatusCode } from 'src/types/envoy/type/http_status';
 import {
   CheckRequest,
   CheckResponse,
 } from 'src/types/envoy/service/auth/v2/external_auth';
+import { ProviderDiscoveryService } from './provider-discovery/provider-discovery.service';
 
 @Injectable()
 export class AuthService {
+  constructor(private providerDiscoveryService: ProviderDiscoveryService) {}
+
   async check(request: CheckRequest): Promise<CheckResponse> {
+    const results = await Promise.all(
+      this.providerDiscoveryService.providers.map((provider) =>
+        provider.authenticate(request),
+      ),
+    );
+
+    console.log(results);
     console.log(JSON.stringify(request, null, 2));
     try {
       const token = 'Bearer abcd';
       console.log('hello world');
-      return this.createUnauthenticatedResponse();
+      // return this.createUnauthenticatedResponse();
       return this.createOkResponse(token);
     } catch (err) {
-      return this.createUnauthenticatedResponse();
+      return this.createInternalServerErrorResponse();
     }
   }
 
@@ -58,6 +72,21 @@ export class AuthService {
         status: { code: StatusCode.Unauthorized },
         headers: [],
         body: JSON.stringify(new UnauthorizedException().getResponse()),
+      },
+    };
+  }
+
+  private createInternalServerErrorResponse(): CheckResponse {
+    return {
+      status: {
+        code: status.INTERNAL,
+        details: [],
+        message: 'Internal Server Error',
+      },
+      deniedResponse: {
+        status: { code: StatusCode.InternalServerError },
+        headers: [],
+        body: JSON.stringify(new InternalServerErrorException().getResponse()),
       },
     };
   }
